@@ -1,7 +1,7 @@
 / changes to ax since initial release
 
 unreleased
-qdoc reads q source through kx.qdocparser (a new dependency, release 0.1.0 or later): qd.doc, getFiles and
+qdoc reads q source through kx.qdocparser (a new dependency, pinned to release 0.1.1): qd.doc, getFiles and
 the tags call give the same results, and qd.doc is many times faster (about 36x on a 2,000-item corpus).
 qdoc's parse no longer uses PCRE2; its renderer still does.
 
