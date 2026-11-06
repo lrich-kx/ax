@@ -13,9 +13,14 @@ The KX Fusionx PCRE2 and Skia modules are required dependencies and need to be l
 use`kx.fusion:pcre2
 use`kx.skia
 ```
+qDoc also needs kx.qdocparser (release 0.1.0 or later), a pure-q qdoc parser with no dependencies of its
+own, which `qdoc.q` loads with `use`kx.qdocparser`.
+
 Respective installation instructions:
 * [PCRE2](https://github.com/KxSystems/fusionx/blob/main/README.md)
 * [Skia](https://github.com/KxSystems/qskia/blob/main/README.md)
+* kx.qdocparser: install its release under `kx/qdocparser` in your module directory (repository link to
+  follow)
 
 ## Build Instructions
 
