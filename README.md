@@ -19,8 +19,9 @@ own, which `qdoc.q` loads with `use`kx.qdocparser`.
 Respective installation instructions:
 * [PCRE2](https://github.com/KxSystems/fusionx/blob/main/README.md)
 * [Skia](https://github.com/KxSystems/qskia/blob/main/README.md)
-* kx.qdocparser: install its release under `kx/qdocparser` in your module directory (repository link to
-  follow)
+* [kx.qdocparser](https://github.com/lrich-kx/kx-qdocparser): install release 0.1.1 under `kx/qdocparser`
+  in your module directory, for example
+  `git clone --branch v0.1.1 https://github.com/lrich-kx/kx-qdocparser.git ~/.kx/mod/kx/qdocparser`
 
 ## Build Instructions
 
