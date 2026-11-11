@@ -1,4 +1,6 @@
 .z.m.fpcre2:use`kx.fusion:pcre2;
+// qdoc reads q source through kx.ax.qdocparser: a pure-q parser that gives this module's own parse result
+.z.m.qdp:use`kx.ax.qdocparser;
 
 system "d .z.m.ax";
 // @fileOverview    A simple wrapper for kdb+'s system function that allows one to suppress stdout/stderr as needed.
@@ -29574,13 +29576,26 @@ system "d .z.m.qd";
     settings: sanitize.settings settings;
     src:      sanitize.src src;
     
-    : i.doc[settings]
-        .z.m.qd.pre.file.toArtifacts
-            lib.build.artifacts 
-                $[`items in key src;
-                    src`items;
-                    getFiles[settings`recursive] src`paths
-                    ];
+    : i.doc[settings] i.parse[settings; src];
+    }
+
+// @fileOverview The renderer's input from a sanitized src: the readmes, then the items of the q files,
+// each with the parameters its tag blocks are checked against. kx.ax.qdocparser parses the files; items
+// given in src that are not files are taken as they are, as lib.build.artifacts takes them.
+// @param settings {#settings}
+// @param src      {dict} A sanitized src: paths or items
+// @returns {#artifacts}
+// @private
+.z.m.qd.i.parse:{[settings; src]
+    s: (enlist `recursive)!enlist settings`recursive;
+    if[not `items in key src; : .z.m.qdp.docItems[s; src`paths]];
+    items: src`items;
+    parsed: .z.m.qdp.docItems[s; select from items where kind = `file];
+    given: lib.build.artifacts select from items where kind <> `file;
+    if[0 = count given; : parsed];
+    given: given ,' ([] parameters: count[given]#enlist ());
+    readmes: parsed where `file = parsed`kind;
+    : (`ref xasc readmes, cols[parsed]#given), parsed where `file <> parsed`kind
     }
 // TODO: Deprecate this function in next major release after 4.3.0
 // @deprecated
