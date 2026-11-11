@@ -28066,10 +28066,13 @@ system "d .z.m.qd";
         artifacts[`parameters]: count[artifacts]#()
         ];
     
+    // The parser gives each function's parameters (kx.ax.qdocparser's docItems): then the tag blocks are built
+    // without parsing function bodies again
+    given: `parameters in cols artifacts;
     : md.i.tags[settings; tdefs]
         $[all cols[data.ARTIFACTS] in cols artifacts;
-            (lib.artifacts.wc artifacts),' flip `tagBlocks`parameters!@[;0 2] 
-                lib.genTagBlocks[settings; artifacts`content];
+            [blocks: lib.genTagBlocks[$[given; @[settings; `checkParams; :; 0b]; settings]; artifacts`content];
+             (lib.artifacts.wc artifacts),' flip `tagBlocks`parameters!(blocks 0; $[given; artifacts`parameters; blocks 2])];
           all md.i.ARTIFACTS_TAGS in cols artifacts;
             artifacts;      // this is itags (used by datatype preprocessor)
             '"artifacts: invalid schema" 
