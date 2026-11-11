@@ -29619,16 +29619,12 @@ system "d .z.m.qd";
 // @private
 .z.m.qd.getFiles:{[recursive; paths]
     
-    // Get paths to all the files matching the pattern
-    files: i.getFile[recursive] each paths;
+    // kx.ax.qdocparser walks the paths and names the files as qdoc does
+    files: .z.m.qdp.getFiles[recursive; paths];
     
-    if[.z.m.axq.isEmpty files; : 0#data.ITEMS];
-   
-    contents: "\n" sv/: read0 each raze files;
-    t: raze paths i.parseFileRef ' files;
+    if[0 = count files; : 0#data.ITEMS];
     
-    : i.validate.items
-        t,'([] kind:`file; content: contents)
+    : i.validate.items files
     }
 // @private
 .z.m.qd.getTags:{[settings; src]
@@ -29839,13 +29835,18 @@ system "d .z.m.qd";
     
 .z.m.qd.i.tags:{[settings; src]
 
-    : md.tags[settings; ::]
-        lib.artifacts.filter[settings]
-            lib.build.artifacts 
-                $[`items in key src;
-                    src`items;
-                    getFiles[settings`recursive] src`paths
-                    ];
+    artifacts: lib.artifacts.filter[settings]
+        lib.build.artifacts 
+            $[`items in key src;
+                src`items;
+                getFiles[settings`recursive] src`paths
+                ];
+    
+    // kx.ax.qdocparser gives the parameters md.tags checks, so it needn't parse the code again. A whole file
+    // has none: it isn't a function (axqc.q, which this replaces, failed to parse whole files in practice)
+    if[count artifacts;
+        artifacts: artifacts ,' ([] parameters: {$[x = `function; .z.m.qdp.parameters y; ()]}'[artifacts`kind; artifacts`content])];
+    : md.tags[settings; ::] artifacts;
     }
 
 // @fileOverview Validate artifacts
