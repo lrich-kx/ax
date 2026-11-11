@@ -1,6 +1,6 @@
 # ax kdb-x installation
 
-[`graphics.q`](../ax/graphics.q) and [`qdoc.q`](../ax/qdoc.q) is written as a module, under kdb-x's module framework. 
+[`graphics.q`](../ax/graphics.q), [`qdoc.q`](../ax/qdoc.q) and [`qdocparser.q`](../ax/qdocparser.q) are written as modules, under kdb-x's module framework. 
 Though modules can be loaded from anywhere if added to your `$QPATH`, we recommend installing under a `kx` folder within your `$QPATH`. This is to avoid name clashes with other user defined modules, as well as providing a name for other KX modules to cross reference each other.
 
 ## Installing a Release
