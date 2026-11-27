@@ -24,6 +24,7 @@ requirements:
   run:
     - q-kx-pcre2
     - q-kx-skia
+    - q-kx-qdocparser ==0.1.1
 
 tests:
    - script:
