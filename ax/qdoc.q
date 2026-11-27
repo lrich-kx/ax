@@ -28817,6 +28817,27 @@ system "d .z.m.qd";
         pre.inject.i.functions input
     }
 
+// @fileOverview The items of the q files among the given artifacts: the artifacts that aren't q files as
+// they are, then each q file's items, in the order the files are given. kx.ax.qdocparser parses the files.
+// qdoc itself reads q source through i.parse; this stays for callers that take items from here, there
+// being no public call for them.
+// @param artifacts {#artifacts} As lib.build.artifacts gives them
+// @returns {#artifacts}
+.z.m.qd.pre.file.toArtifacts:{[artifacts]
+
+    qfiles: select from artifacts where kind = `file, name like "*.q";
+
+    if[0 = count qfiles; : artifacts];
+
+    others: select from artifacts where (kind <> `file) or kind = `file, not name like "*.q";
+
+    // one file at a time: the parser orders files by name, and the items keep the order given
+    items: raze {[c; f] c#.z.m.qdp.items[()!(); enlist f]}[cols artifacts] each select name: ref, kind, content from qfiles;
+
+    if[0 = count items; : others];
+    : others, items
+    }
+
 system "d .z.m";
 
 
